@@ -13,12 +13,18 @@ pub struct SemVer {
 
 impl SemVer {
     pub fn new(major: u32, minor: u32, patch: u32) -> Self {
-        Self { major, minor, patch }
+        Self {
+            major,
+            minor,
+            patch,
+        }
     }
 
     pub fn parse(s: &str) -> Option<Self> {
         let parts: Vec<&str> = s.trim_start_matches('v').split('.').collect();
-        if parts.len() != 3 { return None; }
+        if parts.len() != 3 {
+            return None;
+        }
         Some(Self {
             major: parts[0].parse().ok()?,
             minor: parts[1].parse().ok()?,

@@ -30,13 +30,21 @@ impl DependencyGraph {
     }
 
     pub fn dependencies(&self, node: &str) -> HashSet<&str> {
-        self.edges.get(node).map(|s| s.iter().map(|x| x.as_str()).collect()).unwrap_or_default()
+        self.edges
+            .get(node)
+            .map(|s| s.iter().map(|x| x.as_str()).collect())
+            .unwrap_or_default()
     }
 
     /// Topological sort using Kahn's algorithm. Returns None if cycle detected.
     pub fn topological_sort(&self) -> Option<Vec<String>> {
-        let mut in_degree: HashMap<&str, usize> = self.nodes.iter().map(|n| (n.as_str(), 0)).collect();
-        let mut adj: HashMap<&str, Vec<&str>> = self.nodes.iter().map(|n| (n.as_str(), Vec::new())).collect();
+        let mut in_degree: HashMap<&str, usize> =
+            self.nodes.iter().map(|n| (n.as_str(), 0)).collect();
+        let mut adj: HashMap<&str, Vec<&str>> = self
+            .nodes
+            .iter()
+            .map(|n| (n.as_str(), Vec::new()))
+            .collect();
 
         for (node, deps) in &self.edges {
             for dep in deps {
@@ -55,7 +63,8 @@ impl DependencyGraph {
             in_degree.insert(node.as_str(), deps.len());
         }
 
-        let mut queue: VecDeque<&str> = in_degree.iter()
+        let mut queue: VecDeque<&str> = in_degree
+            .iter()
             .filter(|(_, &deg)| deg == 0)
             .map(|(&n, _)| n)
             .collect();
@@ -86,7 +95,9 @@ impl DependencyGraph {
         let mut visited = HashSet::new();
         let mut stack = vec![to];
         while let Some(node) = stack.pop() {
-            if node == from { return true; }
+            if node == from {
+                return true;
+            }
             if visited.insert(node.to_string()) {
                 if let Some(deps) = self.edges.get(node) {
                     for dep in deps {

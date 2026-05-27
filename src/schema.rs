@@ -21,18 +21,31 @@ pub struct Capability {
     pub version: String,
 }
 
-fn default_version() -> String { "1.0.0".into() }
+fn default_version() -> String {
+    "1.0.0".into()
+}
 
 impl Capability {
     pub fn new(name: &str, confidence: f64) -> Self {
         assert!((0.0..=1.0).contains(&confidence), "confidence must be 0-1");
-        Self { name: name.into(), confidence, ..Default::default() }
+        Self {
+            name: name.into(),
+            confidence,
+            ..Default::default()
+        }
     }
 }
 
 impl Default for Capability {
     fn default() -> Self {
-        Self { name: String::new(), confidence: 0.0, last_used: String::new(), description: String::new(), requires: Vec::new(), version: "1.0.0".into() }
+        Self {
+            name: String::new(),
+            confidence: 0.0,
+            last_used: String::new(),
+            description: String::new(),
+            requires: Vec::new(),
+            version: "1.0.0".into(),
+        }
     }
 }
 
@@ -148,7 +161,9 @@ impl Default for CapabilitySchema {
     }
 }
 
-fn default_schema_version() -> String { "1.0.0".into() }
+fn default_schema_version() -> String {
+    "1.0.0".into()
+}
 
 #[cfg(test)]
 mod tests {

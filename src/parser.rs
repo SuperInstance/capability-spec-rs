@@ -28,17 +28,34 @@ pub fn parse_capability_file(path: &std::path::Path) -> Result<CapabilitySchema,
 
 /// Validate a parsed schema.
 pub fn validate(schema: &CapabilitySchema) -> Result<(), ParseError> {
-    let valid_types = ["lighthouse", "vessel", "scout", "quartermaster", "barnacle", "greenhorn", ""];
+    let valid_types = [
+        "lighthouse",
+        "vessel",
+        "scout",
+        "quartermaster",
+        "barnacle",
+        "greenhorn",
+        "",
+    ];
     if !valid_types.contains(&schema.agent.agent_type.as_str()) {
-        return Err(ParseError::Validation(format!("Invalid agent type: {}", schema.agent.agent_type)));
+        return Err(ParseError::Validation(format!(
+            "Invalid agent type: {}",
+            schema.agent.agent_type
+        )));
     }
     let valid_statuses = ["active", "idle", "hibernating", "decommissioned", ""];
     if !valid_statuses.contains(&schema.agent.status.as_str()) {
-        return Err(ParseError::Validation(format!("Invalid status: {}", schema.agent.status)));
+        return Err(ParseError::Validation(format!(
+            "Invalid status: {}",
+            schema.agent.status
+        )));
     }
     for (name, cap) in &schema.capabilities {
         if !(0.0..=1.0).contains(&cap.confidence) {
-            return Err(ParseError::Validation(format!("Capability '{}' confidence must be 0-1", name)));
+            return Err(ParseError::Validation(format!(
+                "Capability '{}' confidence must be 0-1",
+                name
+            )));
         }
     }
     Ok(())
